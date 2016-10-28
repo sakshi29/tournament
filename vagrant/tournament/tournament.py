@@ -6,31 +6,33 @@
 import psycopg2
 
 
-def connect():
+def connect(database_name="tournament"):
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
-
+    try:
+        DB=psycopg2.connect("dbname={}".format(database_name))
+        cursor=DB.cursor()
+        return DB,cursor
+    except:
+         print("Counld not connect to database..")
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    DB=connect()
-    c=DB.cursor()
+    DB,c=connect()
     c.execute("DELETE FROM match")
     DB.commit()
     DB.close
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    DB=connect()
-    c=DB.cursor()
+    DB,c=connect()
     c.execute("DELETE FROM players_detail")
     DB.commit()
     DB.close
 
 def countPlayers():
     """Returns the number of players currently registered."""
-    DB=connect()
-    c=DB.cursor()
+    DB,c=connect()
+   
     c.execute("SELECT count(*) AS number FROM players_detail")
     no_of_players= c.fetchone()[0]
     DB.close
@@ -46,8 +48,8 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
-    DB=connect()
-    c=DB.cursor()
+    DB,c=connect()
+    
     c.execute("INSERT INTO players_detail(name) VALUES (%s)",(name,))
     DB.commit()
     DB.close          
@@ -65,8 +67,8 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    DB=connect()
-    c=DB.cursor()
+    DB,c=connect()
+   
     c.execute("SELECT * FROM playerStandings")
     players_list=c.fetchall()
     DB.close
@@ -79,8 +81,8 @@ def reportMatch(winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
-    DB=connect()
-    c=DB.cursor()
+    DB,c=connect()
+   
     c.execute("INSERT INTO match(winner,loser) VALUES (%s,%s)",(winner,loser,))
     DB.commit()
     DB.close  
@@ -94,19 +96,16 @@ def swissPairings():
     to him or her in the standings.
   
     Returns:
-      A list of tuples pairs, each of which contains (id1, name1, id2, name2)
+      A list of tuples, each of which contains (id1, name1, id2, name2)
         id1: the first player's unique id
         name1: the first player's name
         id2: the second player's unique id
         name2: the second player's name
     """
-    DB=connect()
-    c=DB.cursor()
-    c.execute("SELECT * FROM playerStandings")
-    result=c.fetchall()
+    result=playerStandings()
     pairs=[]
     for i in range(0,len(result),2):
         pair=(result[i][0],result[i][1],result[i+1][0],result[i+1][1])
         pairs.append(pair)
-    DB.close()
+    
     return pairs
