@@ -94,7 +94,7 @@ def swissPairings():
     to him or her in the standings.
   
     Returns:
-      A list of tuples, each of which contains (id1, name1, id2, name2)
+      A list of tuples pairs, each of which contains (id1, name1, id2, name2)
         id1: the first player's unique id
         name1: the first player's name
         id2: the second player's unique id
