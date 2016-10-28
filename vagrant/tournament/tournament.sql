@@ -9,7 +9,7 @@
 --Drop 
 DROP DATABASE IF EXISTS tournament;
 --create database.
- CREATE DATABASE tournament;
+CREATE DATABASE tournament;
 
 --connect to database tournament
 \c tournament
