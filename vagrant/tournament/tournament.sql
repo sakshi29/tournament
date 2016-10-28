@@ -20,7 +20,7 @@ CREATE TABLE players_detail( player_id SERIAL PRIMARY KEY,
 
 --table to keep record of matches.
 CREATE TABLE match( match_id SERIAL PRIMARY KEY,
-                    winner INTERGER REFERENCES players_detail(player_id),
+                    winner INTEGER REFERENCES players_detail(player_id),
                     loser INTEGER REFERENCES players_detail(player_id)
 );
 
