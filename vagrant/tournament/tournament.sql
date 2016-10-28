@@ -20,19 +20,25 @@ CREATE TABLE match( match_id serial primary key,
                     loser integer references players_detail(player_id)
 );
 
-
+-- Create View 
+--It keep record of no of win of each player
 CREATE VIEW wins AS 
 SELECT players_detail.id , name , count(winner) as wins
 FROM players_detail LEFT JOIN match
 ON players_detail.id = winner
 GROUP BY players_detail.id;
 
+--Create View
+--It keep the record of number of losses
 CREATE VIEW loss AS 
 SELECT players_detail.id , name , count(loser) as loss
 FROM players_detail LEFT JOIN match
 ON players_detail.id = loser
 GROUP BY players_detail.id;
 
+--Create View
+--It keep recored of player_id , name , wins(total no of game won by player_id) , matches(total number of game played by player_id)
+-- in descending order of win
 
 CREATE VIEW playerStandings AS 
 SELECT wins.id,wins.name,wins.wins,(wins.wins + loss.loss) AS matches
