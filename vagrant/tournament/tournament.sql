@@ -15,19 +15,19 @@ CREATE DATABASE tournament;
 \c tournament
 
 --table for players record.
-CREATE TABLE players_detail( player_id serial primary key,
-                             name text );
+CREATE TABLE players_detail( player_id SERIAL PRIMARY KEY,
+                             name TEXT );
 
 --table to keep record of matches.
-CREATE TABLE match( match_id serial primary key,
-                    winner integer references players_detail(player_id),
-                    loser integer references players_detail(player_id)
+CREATE TABLE match( match_id SERIAL PRIMARY KEY,
+                    winner INTERGER REFERENCES players_detail(player_id),
+                    loser INTEGER REFERENCES players_detail(player_id)
 );
 
 -- Create View 
 --It keep record of no of win of each player
 CREATE VIEW wins AS 
-SELECT players_detail.id , name , count(winner) as wins
+SELECT players_detail.id , name , count(winner) AS wins
 FROM players_detail LEFT JOIN match
 ON players_detail.id = winner
 GROUP BY players_detail.id;
@@ -35,7 +35,7 @@ GROUP BY players_detail.id;
 --Create View
 --It keep the record of number of losses
 CREATE VIEW loss AS 
-SELECT players_detail.id , name , count(loser) as loss
+SELECT players_detail.id , name , count(loser) AS loss
 FROM players_detail LEFT JOIN match
 ON players_detail.id = loser
 GROUP BY players_detail.id;
