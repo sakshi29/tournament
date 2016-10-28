@@ -45,5 +45,5 @@ $ python tournament_test.py
 9. Matches are properly deleted.
 10. After one match, players with one win are properly paired.
 
-    Success!  All tests pass!
+Success!  All tests pass!
 
